@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    </plugin-info>
+
+    <resource type="i18n" name="i18n" location="i18n.attachdeleter"/>
+
+    <web-resource key="j_delete_all_attachments" name="Delete all attaches resources">
+        <transformation extension="js">
+            <transformer key="jsI18n"/>
+        </transformation>
+        <resource type="download" name="attachdeleter.js" location="media/attachdeleter.js"/>
+        <context>atl.general</context>
+    </web-resource>
+
+    <web-item key="mail_ru_delete_all_page" name="Delete all attaches configuration link" section="system.admin/globalsettings" weight="95">
+        <label key="mailru-issuecloner.configure"/>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
+            <param name="permission">admin</param>
+        </condition>
+        <link linkId="mail_ru_delete_all_page">/secure/AttachDeleterConfig!default.jspa</link>
+    </web-item>
+
+    <webwork1 key="mail_ru_delete_all-conf" name="Delete all attaches configuration" class="java.lang.Object">
+        <actions>
+            <action name="ru.mail.jira.plugins.AttachDeleterConfig" alias="AttachDeleterConfig">
+                <view name="input">/templates/deleteattachmentsconf.vm</view>
+                <view name="success">/templates/deleteattachmentsconf.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+    <web-item name="mail_ru_delete_all_attachments" i18n-name-key="attachdelete.name" key="attachdelete" section="operations-delete" weight="1000">
+        <description key="attachdelete.description">The all attachments delete Plug-In</description>
+        <label key="attachdelete.label"></label>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.HasProjectPermissionCondition">
+            <param name="permission">attachdeleteall</param>
+        </condition>
+        <link linkId="mail_ru_delete_all_attachments">/secure/DeleteAttachAction!default.jspa?id=${issue.id}</link>
+    </web-item>
+
+    <webwork1 key="delete-all-attaches-work" name="Delete all attaches work" class="java.lang.Object">
+        <actions>
+            <action name="ru.mail.jira.plugins.DeleteAttachAction" alias="DeleteAttachAction">
+            </action>
+        </actions>
+    </webwork1>
+
+    <component key="mail_ru_delete_all_attachments_data_mgr" name="The all attachments delete Plug-In configuration" class="ru.mail.jira.plugins.AttacherMgrImpl"/>
+    <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
+    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+</atlassian-plugin>
