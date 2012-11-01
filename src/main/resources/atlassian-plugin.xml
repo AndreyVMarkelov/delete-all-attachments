@@ -17,7 +17,7 @@
     </web-resource>
 
     <web-item key="mail_ru_delete_all_page" name="Delete all attaches configuration link" section="system.admin/globalsettings" weight="95">
-        <label key="mailru-issuecloner.configure"/>
+        <label key="attachdelete.admin.title"/>
         <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
             <param name="permission">admin</param>
         </condition>
@@ -36,7 +36,7 @@
     <web-item name="mail_ru_delete_all_attachments" i18n-name-key="attachdelete.name" key="attachdelete" section="operations-delete" weight="1000">
         <description key="attachdelete.description">The all attachments delete Plug-In</description>
         <label key="attachdelete.label"></label>
-        <condition class="com.atlassian.jira.plugin.webfragment.conditions.HasProjectPermissionCondition">
+        <condition class="ru.mail.jira.plugins.AttachDeleterCondition">
             <param name="permission">attachdeleteall</param>
         </condition>
         <link linkId="mail_ru_delete_all_attachments">/secure/DeleteAttachAction!default.jspa?id=${issue.id}</link>
@@ -45,6 +45,7 @@
     <webwork1 key="delete-all-attaches-work" name="Delete all attaches work" class="java.lang.Object">
         <actions>
             <action name="ru.mail.jira.plugins.DeleteAttachAction" alias="DeleteAttachAction">
+                <view name="error">/templates/deleteerror.vm</view>
             </action>
         </actions>
     </webwork1>

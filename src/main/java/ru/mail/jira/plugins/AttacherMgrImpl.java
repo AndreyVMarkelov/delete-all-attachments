@@ -82,7 +82,7 @@ public class AttacherMgrImpl
             }
         }
 
-        setStringProperty(PLUGIN_KEY, sb.toString());
+        setStringProperty(PROJECTS, sb.toString());
     }
 
     private void setStringProperty(String key, String value)

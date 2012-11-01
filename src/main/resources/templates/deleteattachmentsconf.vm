@@ -2,7 +2,7 @@
 ## Copyright Mail.Ru Group 2012. All rights reserved.
 <html>
     <head>
-        <title>$i18n.getText("mailru-issuecloner.configure")</title>
+        <title>$i18n.getText("attachdelete.admin.title")</title>
         <meta name="decorator" content="admin"/>
         <meta name="admin.active.section" content="admin_plugins_menu/mailru-admin-section">
         <meta name="admin.active.tab" content="mailru-issue-cloner-configuration">
@@ -14,14 +14,15 @@
         #if($action.hasAdminPermission())
         #if ($saved)
         <div class="aui-message closeable shadowed">
-            <p class="title"><span class="aui-icon icon-success"></span><strong>$action.getText("mailru-issuecloner.success.text")</strong></p>
+            <p class="title"><span class="aui-icon icon-success"></span><strong>$action.getText("attachdelete.success.text")</strong></p>
         </div>
         #end
-        <h2>$action.getText("mailru-issuecloner.formtitle")</h2>
+        <h2>$action.getText("attachdelete.form.title")</h2>
         <form class="aui" onsubmit="if (this.submitted) return false; this.submitted = true; return true"
-              name="jiraform" method="post" action="MailRuIssueClonerConfig.jspa">
+              name="jiraform" method="post" action="AttachDeleterConfig.jspa">
+            <input type="hidden" name="atl_token" value="$atl_token" />
             <div class="field-group">
-                <label for="selectedProjKeys">$action.getText("mailru-issuecloner.selectprojects")</label>
+                <label for="selectedProjKeys">$action.getText("attachdelete.selectprojects")</label>
                 <select multiple="" size="10" id="selectedProjKeys" name="selectedProjKeys">
                 #foreach ($proj in $action.getAllProjects().entrySet())
                     <option value="$proj.key" #if ($savedProjKeys.contains($proj.key)) selected="selected" #end>$proj.value</option>
@@ -36,7 +37,7 @@
             </div>
         </form>
         #else
-        <div class="errorArea">$action.getText("mailru-issuecloner.admin.link.error")</div>
+        <div class="errorArea">$action.getText("attachdelete.admin.link.error")</div>
         #end
     </body>
 </html>

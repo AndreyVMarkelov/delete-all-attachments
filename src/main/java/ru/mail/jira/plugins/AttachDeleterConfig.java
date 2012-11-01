@@ -75,6 +75,7 @@ public class AttachDeleterConfig
     }
 
     @Override
+    @com.atlassian.jira.security.xsrf.RequiresXsrfCheck
     protected String doExecute()
     throws Exception
     {

@@ -8,11 +8,11 @@ import java.util.Collection;
 import com.atlassian.jira.ComponentManager;
 import com.atlassian.jira.exception.RemoveException;
 import com.atlassian.jira.issue.AttachmentManager;
-import com.atlassian.jira.issue.IssueManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.attachment.Attachment;
-import com.atlassian.jira.security.PermissionManager;
+import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.action.issue.AbstractIssueSelectAction;
+import com.atlassian.jira.webtests.Permissions;
 
 /**
  * Delete all attachments action.
@@ -28,33 +28,30 @@ public class DeleteAttachAction
     private static final long serialVersionUID = 2431906489689708128L;
 
     /**
-     * Issue manager.
+     * Plug-In data manager.
      */
-    private final IssueManager issueMgr;
-
-    /**
-     * Permission manager.
-     */
-    private final PermissionManager permMgr;
+    private final AttacherMgr attacherMgr;
 
     /**
      * Constructor.
      */
     public DeleteAttachAction(
-        IssueManager issueMgr,
-        PermissionManager permMgr)
+        AttacherMgr attacherMgr)
     {
-        this.issueMgr = issueMgr;
-        this.permMgr = permMgr;
+        this.attacherMgr = attacherMgr;
     }
 
     @Override
     public String doDefault()
     {
-        String issueKey = getIssueObject().getKey();
+        MutableIssue issue = getIssueObject();
+        if (!hasPermission(issue.getProjectObject()))
+        {
+            addErrorMessage(getText("attachdelete.delete.error.permission"));
+            return ERROR;
+        }
 
-        MutableIssue d = issueMgr.getIssueObject(issueKey);
-        Collection<Attachment> atts = d.getAttachments();
+        Collection<Attachment> atts = issue.getAttachments();
         AttachmentManager am = ComponentManager.getInstance().getAttachmentManager();
         for (Attachment att : atts)
         {
@@ -64,10 +61,34 @@ public class DeleteAttachAction
             }
             catch (RemoveException e)
             {
-                
+                addErrorMessage(getText("attachdelete.delete.error.file", att.getFilename()));
+                return ERROR;
             }
         }
 
-        return getRedirect("/browse/" + issueKey);
+        return getRedirect("/browse/" + issue.getKey());
+    }
+
+    /**
+     * Check permission.
+     */
+    private boolean hasPermission(Project project)
+    {
+        if (project != null)
+        {
+            String[] projectKeys = attacherMgr.getProjectKeys();
+            if (projectKeys != null)
+            {
+                for (String projectKey : projectKeys)
+                {
+                    if (projectKey.equals(project.getId().toString()))
+                    {
+                        return getPermissionManager().hasPermission(Permissions.ATTACHMENT_DELETE_ALL, project, getLoggedInUser());
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }
