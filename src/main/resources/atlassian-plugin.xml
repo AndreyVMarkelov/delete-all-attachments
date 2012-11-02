@@ -8,14 +8,6 @@
 
     <resource type="i18n" name="i18n" location="i18n.attachdeleter"/>
 
-    <web-resource key="j_delete_all_attachments" name="Delete all attaches resources">
-        <transformation extension="js">
-            <transformer key="jsI18n"/>
-        </transformation>
-        <resource type="download" name="attachdeleter.js" location="media/attachdeleter.js"/>
-        <context>atl.general</context>
-    </web-resource>
-
     <web-item key="mail_ru_delete_all_page" name="Delete all attaches configuration link" section="system.admin/globalsettings" weight="95">
         <label key="attachdelete.admin.title"/>
         <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
@@ -45,6 +37,8 @@
     <webwork1 key="delete-all-attaches-work" name="Delete all attaches work" class="java.lang.Object">
         <actions>
             <action name="ru.mail.jira.plugins.DeleteAttachAction" alias="DeleteAttachAction">
+                <view name="input">/templates/confirmdelete.vm</view>
+                <view name="success">/templates/confirmdelete.vm</view>
                 <view name="error">/templates/deleteerror.vm</view>
             </action>
         </actions>

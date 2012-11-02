@@ -19,6 +19,7 @@ import com.atlassian.jira.webtests.Permissions;
  * 
  * @author Andrey Markelov
  */
+@SuppressWarnings("unchecked")
 public class DeleteAttachAction
     extends AbstractIssueSelectAction
 {
@@ -42,7 +43,9 @@ public class DeleteAttachAction
     }
 
     @Override
-    public String doDefault()
+    @com.atlassian.jira.security.xsrf.RequiresXsrfCheck
+    protected String doExecute()
+    throws Exception
     {
         MutableIssue issue = getIssueObject();
         if (!hasPermission(issue.getProjectObject()))
