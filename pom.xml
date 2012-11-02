@@ -6,11 +6,11 @@
     <artifactId>attachdeleter</artifactId>
     <version>1.0</version>
     <organization>
-        <name>Example Company</name>
-        <url>http://www.example.com/</url>
+        <name>Andrey Markelov | Mail.Ru Group</name>
+        <url>http://www.mail.ru/</url>
     </organization>
     <name>attachdeleter</name>
-    <description>This is the ru.mail.jira.plugins:attachdeleter plugin for Atlassian JIRA.</description>
+    <description>This plugin adds button "delete all attachments" that may be configured for individual project.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencies>
         <dependency>
