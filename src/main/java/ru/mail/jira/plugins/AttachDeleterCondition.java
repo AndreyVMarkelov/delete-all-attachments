@@ -4,6 +4,11 @@
  */
 package ru.mail.jira.plugins;
 
+import java.util.Collection;
+import java.util.Map;
+
+import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.attachment.Attachment;
 import com.atlassian.jira.plugin.webfragment.conditions.AbstractJiraPermissionCondition;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.atlassian.jira.project.Project;
@@ -41,11 +46,19 @@ public class AttachDeleterCondition
         JiraHelper jiraHelper)
     {
         final Project project = jiraHelper.getProjectObject();
-        if (project != null)
+        final Map<String, Object> params = jiraHelper.getContextParams();
+        final Issue issue = (Issue) params.get("issue");
+        if (project != null && issue != null)
         {
             String[] projectKeys = attacherMgr.getProjectKeys();
             if (projectKeys != null)
             {
+                Collection<Attachment> atts = issue.getAttachments();
+                if (atts == null || atts.isEmpty())
+                {
+                    return false;
+                }
+
                 for (String projectKey : projectKeys)
                 {
                     if (projectKey.equals(project.getId().toString()))
