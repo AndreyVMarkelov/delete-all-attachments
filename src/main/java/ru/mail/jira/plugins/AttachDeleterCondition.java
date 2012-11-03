@@ -6,7 +6,6 @@ package ru.mail.jira.plugins;
 
 import java.util.Collection;
 import java.util.Map;
-
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.attachment.Attachment;
 import com.atlassian.jira.plugin.webfragment.conditions.AbstractJiraPermissionCondition;
