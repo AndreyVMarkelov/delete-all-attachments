@@ -6,6 +6,7 @@ package ru.mail.jira.plugins;
 
 import java.util.Collection;
 import java.util.Map;
+import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.attachment.Attachment;
 import com.atlassian.jira.plugin.webfragment.conditions.AbstractJiraPermissionCondition;
@@ -13,7 +14,6 @@ import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.security.PermissionManager;
 import com.atlassian.jira.webtests.Permissions;
-import com.opensymphony.user.User;
 
 /**
  * Condition for action "delete all attachments".
