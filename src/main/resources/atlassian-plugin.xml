@@ -35,7 +35,7 @@
         <condition class="ru.mail.jira.plugins.AttachDeleterCondition">
             <param name="permission">attachdeleteall</param>
         </condition>
-        <link linkId="mail_ru_delete_all_attachments">/secure/DeleteAttachAction!default.jspa?id=${issue.id}</link>
+        <link linkId="mail_ru_delete_all_attachments">/secure/DeleteAttachAction!default.jspa?id=${issueId}</link>
     </web-item>
 
     <webwork1 key="delete-all-attaches-work" name="Delete all attaches work" class="java.lang.Object">

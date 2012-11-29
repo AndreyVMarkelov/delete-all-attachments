@@ -6,12 +6,14 @@ package ru.mail.jira.plugins;
 
 import java.util.Collection;
 import com.atlassian.jira.ComponentManager;
+import com.atlassian.jira.config.SubTaskManager;
 import com.atlassian.jira.exception.RemoveException;
 import com.atlassian.jira.issue.AttachmentManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.attachment.Attachment;
+import com.atlassian.jira.issue.link.IssueLinkManager;
 import com.atlassian.jira.project.Project;
-import com.atlassian.jira.web.action.issue.AbstractIssueSelectAction;
+import com.atlassian.jira.web.action.issue.AbstractViewIssue;
 import com.atlassian.jira.webtests.Permissions;
 
 /**
@@ -19,9 +21,8 @@ import com.atlassian.jira.webtests.Permissions;
  * 
  * @author Andrey Markelov
  */
-@SuppressWarnings("unchecked")
 public class DeleteAttachAction
-    extends AbstractIssueSelectAction
+    extends AbstractViewIssue
 {
     /**
      * Unique ID.
@@ -37,8 +38,11 @@ public class DeleteAttachAction
      * Constructor.
      */
     public DeleteAttachAction(
+        IssueLinkManager issueLinkManager,
+        SubTaskManager subTaskManager,
         AttacherMgr attacherMgr)
     {
+        super(issueLinkManager, subTaskManager);
         this.attacherMgr = attacherMgr;
     }
 
