@@ -7,40 +7,49 @@
         <param name="plugin-logo">/media/trash.png</param>
         <param name="plugin-icon">/media/trash.png</param>
         <param name="vendor-icon">/media/icon.png</param>
-        <param name="vendor-logo">/media/logo.png</param>
+        <param name="vendor-logo">/media/icon.png</param>
     </plugin-info>
 
     <resource type="i18n" name="i18n" location="i18n.attachdeleter"/>
 
-    <web-item key="mail_ru_delete_all_page" name="Delete all attaches configuration link" section="system.admin/globalsettings" weight="95">
+    <web-item key="ru-andreymarkelov-delete-all-attachments-conf-page" name="Delete all attaches configuration link" section="system.admin/globalsettings" weight="95">
         <label key="attachdelete.admin.title"/>
-        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
-            <param name="permission">admin</param>
-        </condition>
-        <link linkId="mail_ru_delete_all_page">/secure/AttachDeleterConfig!default.jspa</link>
+        <conditions type="AND">
+            <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
+            <condition class="ru.andreymarkelov.atlas.plugins.attrrem.IsPriorToJiraVersion"><param name="majorVersion">6</param><param name="minorVersion">0</param></condition>
+        </conditions>
+        <link linkId="ru-andreymarkelov-delete-all-attachments-conf-page">/secure/AttachDeleterConfig!default.jspa</link>
+    </web-item>
+    <web-item key="ru-andreymarkelov-delete-all-attachments-conf-page-jira6" name="Delete all attaches configuration link" section="admin_system_menu/top_system_section" weight="95">
+        <label key="attachdelete.admin.title"/>
+        <conditions type="AND">
+            <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
+            <condition class="ru.andreymarkelov.atlas.plugins.attrrem.IsAtLeastJiraVersion"><param name="majorVersion">6</param><param name="minorVersion">0</param></condition>
+        </conditions>
+        <link linkId="ru-andreymarkelov-delete-all-attachments-conf-page-jira6">/secure/AttachDeleterConfig!default.jspa</link>
     </web-item>
 
-    <webwork1 key="mail_ru_delete_all-conf" name="Delete all attaches configuration" class="java.lang.Object">
+    <webwork1 key="ru-andreymarkelov-delete-all-attachments-conf" name="Delete all attaches configuration" class="java.lang.Object">
         <actions>
-            <action name="ru.mail.jira.plugins.AttachDeleterConfig" alias="AttachDeleterConfig">
+            <action name="ru.andreymarkelov.atlas.plugins.attrrem.AttachDeleterConfig" alias="AttachDeleterConfig">
                 <view name="input">/templates/deleteattachmentsconf.vm</view>
                 <view name="success">/templates/deleteattachmentsconf.vm</view>
+                <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
             </action>
         </actions>
     </webwork1>
 
-    <web-item name="mail_ru_delete_all_attachments" i18n-name-key="attachdelete.name" key="attachdelete" section="operations-delete" weight="1000">
+    <web-item name="ru-andreymarkelov-delete-all-attachments-page" i18n-name-key="attachdelete.name" key="attachdelete" section="operations-delete" weight="1000">
         <description key="attachdelete.description">The all attachments delete Plug-In</description>
         <label key="attachdelete.label"></label>
-        <condition class="ru.mail.jira.plugins.AttachDeleterCondition">
-            <param name="permission">attachdeleteall</param>
-        </condition>
-        <link linkId="mail_ru_delete_all_attachments">/secure/DeleteAttachAction!default.jspa?id=${issueId}</link>
+        <condition class="ru.andreymarkelov.atlas.plugins.attrrem.AttachDeleterCondition"><param name="permission">attachdeleteall</param></condition>
+        <link linkId="ru-andreymarkelov-delete-all-attachments-page">/secure/DeleteAttachAction!default.jspa?id=${issueId}</link>
+        <styleClass>trigger-dialog</styleClass>
     </web-item>
 
-    <webwork1 key="delete-all-attaches-work" name="Delete all attaches work" class="java.lang.Object">
+    <webwork1 key="ru-andreymarkelov-delete-all-attachments" name="Delete all attaches work" class="java.lang.Object">
         <actions>
-            <action name="ru.mail.jira.plugins.DeleteAttachAction" alias="DeleteAttachAction">
+            <action name="ru.andreymarkelov.atlas.plugins.attrrem.DeleteAttachAction" alias="DeleteAttachAction">
                 <view name="input">/templates/confirmdelete.vm</view>
                 <view name="success">/templates/confirmdelete.vm</view>
                 <view name="error">/templates/deleteerror.vm</view>
@@ -48,7 +57,7 @@
         </actions>
     </webwork1>
 
-    <component key="mail_ru_delete_all_attachments_data_mgr" name="The all attachments delete Plug-In configuration" class="ru.mail.jira.plugins.AttacherMgrImpl"/>
+    <component key="ru-andreymarkelov-delete-all-attachments-data-mgr" name="The all attachments delete Plug-In configuration" class="ru.andreymarkelov.atlas.plugins.attrrem.AttacherMgrImpl"/>
     <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
 </atlassian-plugin>

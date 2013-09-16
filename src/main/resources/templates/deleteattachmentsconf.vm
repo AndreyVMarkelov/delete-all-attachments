@@ -1,5 +1,3 @@
-## Created by Andrey Markelov 06-09-2012.
-## Copyright Mail.Ru Group 2012. All rights reserved.
 <html>
     <head>
         <title>$i18n.getText("attachdelete.admin.title")</title>
@@ -9,7 +7,6 @@
         $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
     </head>
     <body class="aui">
-        #if($action.hasAdminPermission())
         #if ($saved)
         <div class="aui-message closeable shadowed">
             <p class="title"><span class="aui-icon icon-success"></span><strong>$action.getText("attachdelete.success.text")</strong></p>
@@ -20,10 +17,10 @@
               name="jiraform" method="post" action="AttachDeleterConfig.jspa">
             <input type="hidden" name="atl_token" value="$atl_token" />
             <div class="field-group">
-                <label for="selectedProjKeys">$action.getText("attachdelete.selectprojects")</label>
+                <label for="selectedProjKeys">$action.getText("attachdelete.selectprojects"):</label>
                 <select multiple="" size="10" id="selectedProjKeys" name="selectedProjKeys">
                 #foreach ($proj in $action.getAllProjects().entrySet())
-                    <option value="$proj.key" #if ($savedProjKeys.contains($proj.key)) selected="selected" #end>$proj.value</option>
+                    <option value="$proj.key" #if($savedProjKeys.contains($proj.key)) selected="selected" #end>$proj.value</option>
                 #end
                 </select>
             </div>
@@ -34,8 +31,5 @@
                 </div>
             </div>
         </form>
-        #else
-        <div class="errorArea">$action.getText("attachdelete.admin.link.error")</div>
-        #end
     </body>
 </html>

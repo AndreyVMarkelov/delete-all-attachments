@@ -2,8 +2,6 @@
     <head>
         <title>$action.getText("attachdelete.delete.error")</title>
         <meta name="decorator" content="alt.general"/>
-        <meta name="admin.active.section" content="admin_plugins_menu/mailru-admin-section">
-        <meta name="admin.active.tab" content="mailru-issue-cloner-configuration">
         $webResourceManager.requireResource("jira.webresources:global-static")
         $webResourceManager.requireResource("jira.webresources:jira-global")
         $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
@@ -11,10 +9,7 @@
     <body class="aui">
         <div class="aui-message error shadowed">
             <p class="title">
-                <span class="aui-icon icon-error"></span>
-                #foreach ($error in $action.getErrorMessages())
-                <p><strong>$error</strong></p>
-                #end
+                <span class="aui-icon icon-error"></span>#foreach($error in $action.getErrorMessages())<p><strong>$error</strong></p>#end
             </p>
         </div>
     </body>
