@@ -5,7 +5,7 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.plugin.webfragment.conditions.AbstractIssueCondition;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.atlassian.jira.security.PermissionManager;
-import com.atlassian.jira.webtests.Permissions;
+import com.atlassian.jira.security.Permissions;
 
 public class AttachDeleterCondition extends AbstractIssueCondition {
     private final AttacherMgr attacherMgr;

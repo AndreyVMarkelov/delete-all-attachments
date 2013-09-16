@@ -8,8 +8,8 @@ import com.atlassian.jira.issue.AttachmentManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.attachment.Attachment;
 import com.atlassian.jira.project.Project;
+import com.atlassian.jira.security.Permissions;
 import com.atlassian.jira.web.action.issue.AbstractViewIssue;
-import com.atlassian.jira.webtests.Permissions;
 
 public class DeleteAttachAction extends AbstractViewIssue {
     private static final long serialVersionUID = 2431906489689708128L;
