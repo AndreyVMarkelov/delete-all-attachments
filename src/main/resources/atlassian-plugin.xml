@@ -4,8 +4,8 @@
         <description>${project.description}</description>
         <version>${project.version}</version>
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
-        <param name="plugin-logo">/media/trash.png</param>
-        <param name="plugin-icon">/media/trash.png</param>
+        <param name="plugin-logo">/media/trashLogo.png</param>
+        <param name="plugin-icon">/media/trashIcon.png</param>
         <param name="vendor-icon">/media/icon.png</param>
         <param name="vendor-logo">/media/icon.png</param>
     </plugin-info>
