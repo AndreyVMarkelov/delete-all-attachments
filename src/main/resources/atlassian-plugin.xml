@@ -29,7 +29,7 @@
         <link linkId="ru-andreymarkelov-delete-all-attachments-conf-page-jira6">/secure/AttachDeleterConfig!default.jspa</link>
     </web-item>
 
-    <webwork1 key="ru-andreymarkelov-delete-all-attachments-conf" name="Delete all attaches configuration" class="java.lang.Object">
+    <webwork1 key="ru-andreymarkelov-delete-all-attachments-conf" name="Delete all attachments configuration" class="java.lang.Object">
         <actions>
             <action name="ru.andreymarkelov.atlas.plugins.attrrem.AttachDeleterConfig" alias="AttachDeleterConfig">
                 <view name="input">/templates/deleteattachmentsconf.vm</view>
@@ -60,4 +60,10 @@
     <component key="ru-andreymarkelov-delete-all-attachments-data-mgr" name="The all attachments delete Plug-In configuration" class="ru.andreymarkelov.atlas.plugins.attrrem.AttacherMgrImpl"/>
     <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+
+    <workflow-function key="ru-andreymarkelov-delete-all-attachments-function" name="Delete All Attachments" i18n-name-key="attachdelete.post.name" class="ru.andreymarkelov.atlas.plugins.attrrem.post.DeleteAttachmentsFunctionFactory">
+        <description key="attachdelete.post.description">This function deletes all attachments if an executor has permissions</description>
+        <function-class>ru.andreymarkelov.atlas.plugins.attrrem.post.DeleteAttachmentsFunction</function-class>
+        <resource type="velocity" name="view" location="templates/ru/andreymarkelov/atlas/plugins/attrrem/view-delete-all-attachments.vm"/>
+    </workflow-function>
 </atlassian-plugin>
