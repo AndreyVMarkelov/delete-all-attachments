@@ -44,7 +44,8 @@
         <label key="attachdelete.label"></label>
         <condition class="ru.andreymarkelov.atlas.plugins.attrrem.AttachDeleterCondition"><param name="permission">attachdeleteall</param></condition>
         <link linkId="ru-andreymarkelov-delete-all-attachments-page">/secure/DeleteAttachAction!default.jspa?id=${issueId}</link>
-        <styleClass>trigger-dialog</styleClass>
+        <styleClass>trigger-dialog issueaction-assign-issue opsbar-operations</styleClass>
+        <param name="isPopupLink">true</param>
     </web-item>
 
     <webwork1 key="ru-andreymarkelov-delete-all-attachments" name="Delete all attaches work" class="java.lang.Object">
