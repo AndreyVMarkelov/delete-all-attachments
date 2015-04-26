@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.title")</title>
+        <meta content="admin" name="decorator"/>
+        <meta content="admin_plugins_menu/delete-all-attachments-section" name="admin.active.section">
+        <meta content="delete-all-attachments-settings" name="admin.active.tab">
+        $webResourceManager.requireResource("jira.webresources:global-static")
+        $webResourceManager.requireResource("jira.webresources:jira-global")
+        $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+    </head>
+    <body class="aui">
+        <section id="content" role="main">
+            <header class="aui-page-header">
+                <div class="aui-page-header-inner">
+                    <div class="aui-page-header-main">
+                        <h1>$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.title")</h1>
+                        <p>$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.desc")</p>
+                    </div>
+                </div>
+            </header>
+            <div class="aui-page-panel">
+                <div class="aui-page-panel-inner">
+                    <section class="aui-page-panel-content">
+                        #if ($saved)
+                        <div class="aui-message closeable shadowed">
+                            <p class="title">
+                                <span class="aui-icon icon-success"></span>
+                                <strong>$action.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.success.text")</strong>
+                            </p>
+                        </div>
+                        #end
+                        <form class="aui" name="jiraform" method="post" action="AttachDeleterConfig.jspa">
+                            <input type="hidden" name="atl_token" value="$atl_token"/>
+                            <div class="field-group">
+                                <label for="selectedProjKeys">$action.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.selectprojects"):</label>
+                                <select class="select" multiple="" size="10" id="selectedProjKeys" name="selectedProjKeys">
+                                #foreach ($proj in $action.getAllProjects().entrySet())
+                                    <option value="$proj.key" #if($savedProjKeys.contains($proj.key)) selected="selected" #end>$proj.value</option>
+                                #end
+                                </select>
+                                #if($action.getErrors().containsKey("selectedProjKeys"))<div class="error">$action.getErrors().get("selectedProjKeys")</div>#end
+                                <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.selectprojects.desc")</div>
+                            </div>
+                            <div class="buttons-container">
+                                <div class="buttons">
+                                    <input class="button submit" type="submit" value='$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.save")'/>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

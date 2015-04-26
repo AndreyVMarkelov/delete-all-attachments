@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.attrrem;
+package ru.andreymarkelov.atlas.plugins.attrrem.manager;
 
 public interface AttacherMgr {
     String[] getProjectKeys();

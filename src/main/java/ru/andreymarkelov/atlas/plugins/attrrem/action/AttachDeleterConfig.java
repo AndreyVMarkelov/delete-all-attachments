@@ -1,30 +1,37 @@
-package ru.andreymarkelov.atlas.plugins.attrrem;
+package ru.andreymarkelov.atlas.plugins.attrrem.action;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import com.atlassian.crowd.embedded.api.User;
+
+import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
+
+import com.atlassian.jira.permission.GlobalPermissionKey;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
-import com.atlassian.jira.security.Permissions;
+import com.atlassian.jira.security.GlobalPermissionManager;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import com.atlassian.sal.api.ApplicationProperties;
 
 public class AttachDeleterConfig extends JiraWebActionSupport {
     private static final long serialVersionUID = -8881690781888724545L;
 
-    private final ApplicationProperties applicationProperties;
     private final AttacherMgr attacherMgr;
+    private final GlobalPermissionManager globalPermissionManager;
+
     private boolean isSaved = false;
     private ProjectManager prMgr;
     private List<String> savedProjKeys;
     private String[] selectedProjKeys = new String[0];
 
-    public AttachDeleterConfig(ApplicationProperties applicationProperties, AttacherMgr attacherMgr, ProjectManager prMgr) {
-        this.applicationProperties = applicationProperties;
+    public AttachDeleterConfig(
+            AttacherMgr attacherMgr,
+            ProjectManager prMgr,
+            GlobalPermissionManager globalPermissionManager) {
         this.attacherMgr = attacherMgr;
         this.prMgr = prMgr;
+        this.globalPermissionManager = globalPermissionManager;
         selectedProjKeys = attacherMgr.getProjectKeys();
         savedProjKeys = selectedProjKeys == null ? null : Arrays.asList(selectedProjKeys);
     }
@@ -59,10 +66,6 @@ public class AttachDeleterConfig extends JiraWebActionSupport {
         return allProjs;
     }
 
-    public String getBaseUrl() {
-        return applicationProperties.getBaseUrl();
-    }
-
     private String getProjView(String key, String name) {
         return (key + ": " + name);
     }
@@ -76,11 +79,11 @@ public class AttachDeleterConfig extends JiraWebActionSupport {
     }
 
     public boolean hasAdminPermission() {
-        User user = getLoggedInUser();
+        ApplicationUser user = getLoggedInApplicationUser();
         if (user == null) {
             return false;
         }
-        return getPermissionManager().hasPermission(Permissions.ADMINISTER, getLoggedInUser());
+        return globalPermissionManager.hasPermission(GlobalPermissionKey.ADMINISTER, user);
     }
 
     public boolean isSaved() {

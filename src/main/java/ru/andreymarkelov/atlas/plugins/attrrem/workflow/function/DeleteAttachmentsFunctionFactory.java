@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.attrrem.post;
+package ru.andreymarkelov.atlas.plugins.attrrem.workflow.function;
 
 import java.util.Collections;
 import java.util.Map;

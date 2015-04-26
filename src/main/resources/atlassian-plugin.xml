@@ -4,67 +4,63 @@
         <description>${project.description}</description>
         <version>${project.version}</version>
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
-        <param name="plugin-logo">/media/trashLogo.png</param>
-        <param name="plugin-icon">/media/trashIcon.png</param>
-        <param name="vendor-icon">/media/icon.png</param>
-        <param name="vendor-logo">/media/icon.png</param>
+        <param name="plugin-logo">/ru/andreymarkelov/atlas/plugins/attrrem/images/trashLogo.png</param>
+        <param name="plugin-icon">/ru/andreymarkelov/atlas/plugins/attrrem/images/trashIcon.png</param>
+        <param name="vendor-icon">/ru/andreymarkelov/atlas/plugins/attrrem/images/32.jpg</param>
+        <param name="vendor-logo">/ru/andreymarkelov/atlas/plugins/attrrem/images/144.jpg</param>
+        <param name="atlassian-data-center-compatible">true</param>
+        <param name="configure.url">/secure/AttachDeleterConfig!default.jspa</param>
     </plugin-info>
 
-    <resource type="i18n" name="i18n" location="i18n.attachdeleter"/>
+    <!-- I18N -->
+    <resource type="i18n" name="i18n" location="ru.andreymarkelov.atlas.plugins.attrrem.i18n.attachdeleter"/>
 
-    <web-item key="ru-andreymarkelov-delete-all-attachments-conf-page" name="Delete all attaches configuration link" section="system.admin/globalsettings" weight="95">
-        <label key="attachdelete.admin.title"/>
-        <conditions type="AND">
-            <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
-            <condition class="ru.andreymarkelov.atlas.plugins.attrrem.IsPriorToJiraVersion"><param name="majorVersion">6</param><param name="minorVersion">0</param></condition>
-        </conditions>
-        <link linkId="ru-andreymarkelov-delete-all-attachments-conf-page">/secure/AttachDeleterConfig!default.jspa</link>
+    <!-- Web Items -->
+    <web-section key="delete-all-attachments-section" name="Delete All Attachments Section" location="admin_plugins_menu">
+        <label key="ru.andreymarkelov.atlas.plugins.attrrem.section"/>
+    </web-section>
+    <web-item key="delete-all-attachments-settings" name="Delete All Attachments Settings" section="admin_plugins_menu/delete-all-attachments-section" weight="95">
+        <label key="ru.andreymarkelov.atlas.plugins.attrrem.settings.title">Delete All Attachments Settings</label>
+        <description key="ru.andreymarkelov.atlas.plugins.attrrem.settings.desc">On this page you can configure projects when Delete All Attachments will be available.</description>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
+        <link linkId="delete-all-attachments-settings">/secure/AttachDeleterConfig!default.jspa</link>
     </web-item>
-    <web-item key="ru-andreymarkelov-delete-all-attachments-conf-page-jira6" name="Delete all attaches configuration link" section="admin_system_menu/top_system_section" weight="95">
-        <label key="attachdelete.admin.title"/>
-        <conditions type="AND">
-            <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
-            <condition class="ru.andreymarkelov.atlas.plugins.attrrem.IsAtLeastJiraVersion"><param name="majorVersion">6</param><param name="minorVersion">0</param></condition>
-        </conditions>
-        <link linkId="ru-andreymarkelov-delete-all-attachments-conf-page-jira6">/secure/AttachDeleterConfig!default.jspa</link>
-    </web-item>
-
-    <webwork1 key="ru-andreymarkelov-delete-all-attachments-conf" name="Delete all attachments configuration" class="java.lang.Object">
-        <actions>
-            <action name="ru.andreymarkelov.atlas.plugins.attrrem.AttachDeleterConfig" alias="AttachDeleterConfig">
-                <view name="input">/templates/deleteattachmentsconf.vm</view>
-                <view name="success">/templates/deleteattachmentsconf.vm</view>
-                <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
-            </action>
-        </actions>
-    </webwork1>
-
-    <web-item name="ru-andreymarkelov-delete-all-attachments-page" i18n-name-key="attachdelete.name" key="attachdelete" section="operations-delete" weight="1000">
-        <description key="attachdelete.description">The all attachments delete Plug-In</description>
-        <label key="attachdelete.label"></label>
-        <condition class="ru.andreymarkelov.atlas.plugins.attrrem.AttachDeleterCondition"><param name="permission">attachdeleteall</param></condition>
+    <web-item name="Delete All Attachments Action" key="delete-all-attachments-settings-action" section="operations-delete" weight="1000">
+        <label key="ru.andreymarkelov.atlas.plugins.attrrem.action">Delete All Attachments</label>
+        <description key="ru.andreymarkelov.atlas.plugins.attrrem.action.desc">Delete all issue attachements if you have permission.</description>
+        <condition class="ru.andreymarkelov.atlas.plugins.attrrem.condition.AttachDeleterCondition"><param name="permission">attachdeleteall</param></condition>
         <link linkId="ru-andreymarkelov-delete-all-attachments-page">/secure/DeleteAttachAction!default.jspa?id=${issueId}</link>
         <styleClass>trigger-dialog issueaction-assign-issue opsbar-operations</styleClass>
         <param name="isPopupLink">true</param>
     </web-item>
 
-    <webwork1 key="ru-andreymarkelov-delete-all-attachments" name="Delete all attaches work" class="java.lang.Object">
+    <!-- Actions -->
+    <webwork1 key="ru-andreymarkelov-delete-all-attachments" name="Delete All Attachments Actions" class="java.lang.Object">
         <actions>
-            <action name="ru.andreymarkelov.atlas.plugins.attrrem.DeleteAttachAction" alias="DeleteAttachAction">
-                <view name="input">/templates/confirmdelete.vm</view>
-                <view name="success">/templates/confirmdelete.vm</view>
-                <view name="error">/templates/deleteerror.vm</view>
+            <action name="ru.andreymarkelov.atlas.plugins.attrrem.action.DeleteAttachAction" alias="DeleteAttachAction">
+                <view name="input">/ru/andreymarkelov/atlas/plugins/attrrem/templates/action/issue/confirmdelete.vm</view>
+                <view name="success">/ru/andreymarkelov/atlas/plugins/attrrem/templates/action/issue/confirmdelete.vm</view>
+                <view name="error">/ru/andreymarkelov/atlas/plugins/attrrem/templates/action/issue/deleteerror.vm</view>
+            </action>
+            <action name="ru.andreymarkelov.atlas.plugins.attrrem.action.AttachDeleterConfig" alias="AttachDeleterConfig">
+                <view name="input">/ru/andreymarkelov/atlas/plugins/attrrem/templates/action/admin/deleteattachmentsconf.vm</view>
+                <view name="success">/ru/andreymarkelov/atlas/plugins/attrrem/templates/action/admin/deleteattachmentsconf.vm</view>
+                <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
             </action>
         </actions>
     </webwork1>
 
-    <component key="ru-andreymarkelov-delete-all-attachments-data-mgr" name="The all attachments delete Plug-In configuration" class="ru.andreymarkelov.atlas.plugins.attrrem.AttacherMgrImpl"/>
+    <!-- Components -->
+    <component key="ru-andreymarkelov-delete-all-attachments-data-mgr" name="The all attachments delete Plug-In configuration" class="ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgrImpl">
+        <interface>ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr</interface>
+    </component>
     <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
 
-    <workflow-function key="ru-andreymarkelov-delete-all-attachments-function" name="Delete All Attachments" i18n-name-key="attachdelete.post.name" class="ru.andreymarkelov.atlas.plugins.attrrem.post.DeleteAttachmentsFunctionFactory">
-        <description key="attachdelete.post.description">This function deletes all attachments if an executor has permissions</description>
-        <function-class>ru.andreymarkelov.atlas.plugins.attrrem.post.DeleteAttachmentsFunction</function-class>
-        <resource type="velocity" name="view" location="templates/ru/andreymarkelov/atlas/plugins/attrrem/view-delete-all-attachments.vm"/>
+    <!-- Post-Function -->
+    <workflow-function key="ru-andreymarkelov-delete-all-attachments-function" name="Delete All Attachments Post-Function" class="ru.andreymarkelov.atlas.plugins.attrrem.workflow.function.DeleteAttachmentsFunctionFactory" i18n-name-key="ru.andreymarkelov.atlas.plugins.attrrem.postfunction.attachdelete.name">
+        <description key="ru.andreymarkelov.atlas.plugins.attrrem.postfunction.attachdelete.desc">This function deletes all attachments if an executor has permissions.</description>
+        <function-class>ru.andreymarkelov.atlas.plugins.attrrem.workflow.function.DeleteAttachmentsFunction</function-class>
+        <resource type="velocity" name="view" location="/ru/andreymarkelov/atlas/plugins/attrrem/templates/workflow/function/view-delete-all-attachments.vm"/>
     </workflow-function>
 </atlassian-plugin>

@@ -1,13 +1,15 @@
-package ru.andreymarkelov.atlas.plugins.attrrem;
+package ru.andreymarkelov.atlas.plugins.attrrem.condition;
 
-import com.atlassian.crowd.embedded.api.User;
+import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
+
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.plugin.webfragment.conditions.AbstractIssueCondition;
+import com.atlassian.jira.permission.ProjectPermissions;
+import com.atlassian.jira.plugin.webfragment.conditions.AbstractIssueWebCondition;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.atlassian.jira.security.PermissionManager;
-import com.atlassian.jira.security.Permissions;
+import com.atlassian.jira.user.ApplicationUser;
 
-public class AttachDeleterCondition extends AbstractIssueCondition {
+public class AttachDeleterCondition extends AbstractIssueWebCondition {
     private final AttacherMgr attacherMgr;
     private final PermissionManager permissionManager;
 
@@ -16,18 +18,17 @@ public class AttachDeleterCondition extends AbstractIssueCondition {
         this.attacherMgr = attacherMgr;
     }
 
-    public boolean shouldDisplay(User user, Issue issue, JiraHelper jh) {
+    public boolean shouldDisplay(ApplicationUser user, Issue issue, JiraHelper jiraHelper) {
         if (issue != null && issue.getKey() != null) {
             String[] projectKeys = attacherMgr.getProjectKeys();
             if (projectKeys != null) {
                 for (String projectKey : projectKeys) {
                     if (projectKey.equals(issue.getProjectObject().getId().toString())) {
-                        return permissionManager.hasPermission(Permissions.ATTACHMENT_DELETE_ALL, issue.getProjectObject(), user);
+                        return permissionManager.hasPermission(ProjectPermissions.DELETE_ALL_ATTACHMENTS, issue, user);
                     }
                 }
             }
         }
-
         return false;
     }
 }

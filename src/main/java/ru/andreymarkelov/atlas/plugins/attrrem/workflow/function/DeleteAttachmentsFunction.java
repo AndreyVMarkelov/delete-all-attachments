@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.attrrem.post;
+package ru.andreymarkelov.atlas.plugins.attrrem.workflow.function;
 
 import java.util.Collection;
 import java.util.Map;
@@ -7,10 +7,9 @@ import com.atlassian.jira.exception.RemoveException;
 import com.atlassian.jira.issue.AttachmentManager;
 import com.atlassian.jira.issue.MutableIssue;
 import com.atlassian.jira.issue.attachment.Attachment;
-import com.atlassian.jira.project.Project;
+import com.atlassian.jira.permission.ProjectPermissions;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.security.PermissionManager;
-import com.atlassian.jira.security.Permissions;
 import com.atlassian.jira.workflow.function.issue.AbstractJiraFunctionProvider;
 import com.opensymphony.module.propertyset.PropertySet;
 import com.opensymphony.workflow.WorkflowException;
@@ -29,11 +28,12 @@ public class DeleteAttachmentsFunction extends AbstractJiraFunctionProvider {
         this.permissionManager = permissionManager;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void execute(Map transientVars, Map args, PropertySet ps) throws WorkflowException {
         MutableIssue issue = getIssue(transientVars);
 
-        if (!hasPermission(issue.getProjectObject())) {
+        if (!permissionManager.hasPermission(ProjectPermissions.DELETE_ALL_ATTACHMENTS, issue, jiraAuthenticationContext.getUser())) {
             throw new RuntimeException(getText("attachdelete.delete.error.permission"));
         }
 
@@ -49,9 +49,5 @@ public class DeleteAttachmentsFunction extends AbstractJiraFunctionProvider {
 
     private String getText(String key, String... args) {
         return jiraAuthenticationContext.getI18nHelper().getText(key, args);
-    }
-
-    private boolean hasPermission(Project project) {
-        return permissionManager.hasPermission(Permissions.ATTACHMENT_DELETE_ALL, project, jiraAuthenticationContext.getLoggedInUser());
     }
 }

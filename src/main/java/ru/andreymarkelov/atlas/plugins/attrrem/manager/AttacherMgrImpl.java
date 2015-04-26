@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.attrrem;
+package ru.andreymarkelov.atlas.plugins.attrrem.manager;
 
 import java.util.ArrayList;
 import java.util.List;

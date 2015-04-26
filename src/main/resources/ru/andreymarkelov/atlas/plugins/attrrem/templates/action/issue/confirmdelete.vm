@@ -1,17 +1,18 @@
 <html>
     <head>
-        <title>$action.getText("attachdelete.name")</title>
+        <title>$action.getText("ru.andreymarkelov.atlas.plugins.attrrem.action")</title>
         <meta name="decorator" content="issueaction" />
         $webResourceManager.requireResource("jira.webresources:global-static")
         $webResourceManager.requireResource("jira.webresources:jira-global")
         $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
     </head>
     <body class="aui">
-        <h2>$action.getText("attachdelete.name")</h2>
+        <h2>$action.getText("ru.andreymarkelov.atlas.plugins.attrrem.action")</h2>
         <form class="aui" method="post" action="DeleteAttachAction.jspa">
             <div class="form-body" style="max-height: 468px;">
-                <div class="aui-message info"><span class="aui-icon icon-info"></span>
-                    <p>$action.getText("attachdelete.confirm")</p>
+                <div class="aui-message info">
+                    <span class="aui-icon icon-info"></span>
+                    <p>$action.getText("ru.andreymarkelov.atlas.plugins.attrrem.action.confirm")</p>
                 </div>
             </div>
             <div class="hidden">

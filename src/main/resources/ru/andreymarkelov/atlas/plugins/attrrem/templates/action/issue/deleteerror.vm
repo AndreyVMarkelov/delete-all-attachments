@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>$action.getText("attachdelete.delete.error")</title>
+        <title>$action.getText("ru.andreymarkelov.atlas.plugins.attrrem.action.error")</title>
         <meta name="decorator" content="issueaction" />
         $webResourceManager.requireResource("jira.webresources:global-static")
         $webResourceManager.requireResource("jira.webresources:jira-global")
