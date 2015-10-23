@@ -33,7 +33,7 @@ public class DeleteAttachmentsFunction extends AbstractJiraFunctionProvider {
     public void execute(Map transientVars, Map args, PropertySet ps) throws WorkflowException {
         MutableIssue issue = getIssue(transientVars);
 
-        if (!permissionManager.hasPermission(ProjectPermissions.DELETE_ALL_ATTACHMENTS, issue, jiraAuthenticationContext.getUser())) {
+        if (!permissionManager.hasPermission(ProjectPermissions.DELETE_ALL_ATTACHMENTS, issue, jiraAuthenticationContext.getLoggedInUser())) {
             throw new RuntimeException(getText("attachdelete.delete.error.permission"));
         }
 

@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
-
 import com.atlassian.jira.permission.GlobalPermissionKey;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+
+import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
 
 public class AttachDeleterConfig extends JiraWebActionSupport {
     private static final long serialVersionUID = -8881690781888724545L;
@@ -79,7 +79,7 @@ public class AttachDeleterConfig extends JiraWebActionSupport {
     }
 
     public boolean hasAdminPermission() {
-        ApplicationUser user = getLoggedInApplicationUser();
+        ApplicationUser user = getLoggedInUser();
         if (user == null) {
             return false;
         }

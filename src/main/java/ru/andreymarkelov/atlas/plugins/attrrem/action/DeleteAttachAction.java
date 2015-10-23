@@ -2,8 +2,6 @@ package ru.andreymarkelov.atlas.plugins.attrrem.action;
 
 import java.util.Collection;
 
-import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
-
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.SubTaskManager;
 import com.atlassian.jira.exception.RemoveException;
@@ -15,6 +13,8 @@ import com.atlassian.jira.project.Project;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.security.PermissionManager;
 import com.atlassian.jira.web.action.issue.AbstractViewIssue;
+
+import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
 
 public class DeleteAttachAction extends AbstractViewIssue {
     private static final long serialVersionUID = 2431906489689708128L;
@@ -37,7 +37,7 @@ public class DeleteAttachAction extends AbstractViewIssue {
     @Override
     @com.atlassian.jira.security.xsrf.RequiresXsrfCheck
     protected String doExecute() throws Exception {
-        MutableIssue issue = getIssueObject();
+        MutableIssue issue = this.getMutableIssue();
         if (!hasPermission(issue.getProjectObject())) {
             addErrorMessage(authenticationContext.getI18nHelper().getText("ru.andreymarkelov.atlas.plugins.attrrem.action.error.permission"));
             return ERROR;
@@ -62,7 +62,7 @@ public class DeleteAttachAction extends AbstractViewIssue {
             if (projectKeys != null) {
                 for (String projectKey : projectKeys) {
                     if (projectKey.equals(project.getId().toString())) {
-                        return permissionManager.hasPermission(ProjectPermissions.DELETE_ALL_ATTACHMENTS, getIssueObject(), getLoggedInApplicationUser());
+                        return permissionManager.hasPermission(ProjectPermissions.DELETE_ALL_ATTACHMENTS, getIssueObject(), getLoggedInUser());
                     }
                 }
             }
