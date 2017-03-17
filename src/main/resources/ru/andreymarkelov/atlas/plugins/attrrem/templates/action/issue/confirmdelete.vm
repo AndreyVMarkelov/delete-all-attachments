@@ -23,8 +23,8 @@
             </div>
             <div class="buttons-container form-footer">
                 <div class="buttons">
-                    <input class="button submit" type="submit" name="add" value="$action.getText("common.words.yes")" accesskey="S" title="Press Alt+Shift+S to submit form"/>
-                    <a title="Press Alt+Shift+` to cancel" id="assign-issue-cancel" href="/jira/browse/$action.getIssueObject().getKey()" class="aui-button aui-button-link cancel" accesskey="`">Cancel</a>
+                    <input class="button submit" type="submit" name="add" value="$action.getText("common.words.yes")"/>
+                    <a id="assign-issue-cancel" href="/jira/browse/$action.getIssueObject().getKey()" class="aui-button aui-button-link cancel">Cancel</a>
                 </div>
             </div>
         </form>
