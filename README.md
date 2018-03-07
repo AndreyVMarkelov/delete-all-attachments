@@ -1,4 +1,3 @@
-mailru-jira-plugins-issue-delete-attachments
-============================================
+# Delete All Attachments
 
-Delete all attachments Jira Plug-In
+Multiple Attachment Delete for Jira.
