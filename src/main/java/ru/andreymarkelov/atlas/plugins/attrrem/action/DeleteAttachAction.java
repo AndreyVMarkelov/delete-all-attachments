@@ -2,7 +2,9 @@ package ru.andreymarkelov.atlas.plugins.attrrem.action;
 
 import java.util.Collection;
 
-import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.bc.JiraServiceContext;
+import com.atlassian.jira.bc.JiraServiceContextImpl;
+import com.atlassian.jira.bc.issue.attachment.AttachmentService;
 import com.atlassian.jira.config.SubTaskManager;
 import com.atlassian.jira.exception.RemoveException;
 import com.atlassian.jira.issue.AttachmentManager;
@@ -12,8 +14,8 @@ import com.atlassian.jira.permission.ProjectPermissions;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.security.PermissionManager;
+import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.issue.AbstractViewIssue;
-
 import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
 
 public class DeleteAttachAction extends AbstractViewIssue {
@@ -22,38 +24,45 @@ public class DeleteAttachAction extends AbstractViewIssue {
     private final AttacherMgr attacherMgr;
     private final JiraAuthenticationContext authenticationContext;
     private final PermissionManager permissionManager;
+    private final AttachmentService attachmentService;
+    private final AttachmentManager attachmentManager;
 
     public DeleteAttachAction(
             SubTaskManager subTaskManager,
             AttacherMgr attacherMgr,
             JiraAuthenticationContext authenticationContext,
-            PermissionManager permissionManager) {
+            PermissionManager permissionManager,
+            AttachmentService attachmentService,
+            AttachmentManager attachmentManager) {
         super(subTaskManager);
         this.attacherMgr = attacherMgr;
         this.authenticationContext = authenticationContext;
         this.permissionManager = permissionManager;
+        this.attachmentService = attachmentService;
+        this.attachmentManager = attachmentManager;
     }
 
     @Override
-    @com.atlassian.jira.security.xsrf.RequiresXsrfCheck
-    protected String doExecute() throws Exception {
+    @RequiresXsrfCheck
+    protected String doExecute() {
         MutableIssue issue = this.getMutableIssue();
         if (!hasPermission(issue.getProjectObject())) {
             addErrorMessage(authenticationContext.getI18nHelper().getText("ru.andreymarkelov.atlas.plugins.attrrem.action.error.permission"));
             return ERROR;
         }
 
-        Collection<Attachment> atts = issue.getAttachments();
-        AttachmentManager am = ComponentAccessor.getAttachmentManager();
-        for (Attachment att : atts) {
+        JiraServiceContext jiraServiceContext = new JiraServiceContextImpl(authenticationContext.getLoggedInUser());
+        Collection<Attachment> attachments = issue.getAttachments();
+        for (Attachment attachment : attachments) {
             try {
-                am.deleteAttachment(att);
+                attachmentService.delete(jiraServiceContext, attachment.getId());
+                attachmentManager.deleteAttachment(attachment);
             } catch (RemoveException e) {
-                addErrorMessage(authenticationContext.getI18nHelper().getText("ru.andreymarkelov.atlas.plugins.attrrem.action.error.file", att.getFilename()));
+                addErrorMessage(authenticationContext.getI18nHelper().getText("ru.andreymarkelov.atlas.plugins.attrrem.action.error.file", attachment.getFilename()));
                 return ERROR;
             }
         }
-        return redirect("/browse/" + issue.getKey());
+        return redirect();
     }
 
     private boolean hasPermission(Project project) {
@@ -70,11 +79,7 @@ public class DeleteAttachAction extends AbstractViewIssue {
         return false;
     }
 
-    private String redirect(String path) {
-        if (isInlineDialogMode()) {
-            return returnCompleteWithInlineRedirect(path);
-        } else {
-            return getRedirect(path);
-        }
+    private String redirect() {
+        return isInlineDialogMode() ? returnComplete() : getRedirect("/browse/" + getIssue().getString("key"));
     }
 }

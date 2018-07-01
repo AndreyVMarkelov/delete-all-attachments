@@ -15,6 +15,22 @@
     <!-- I18N -->
     <resource type="i18n" name="i18n" location="ru.andreymarkelov.atlas.plugins.attrrem.i18n.attachdeleter"/>
 
+    <!-- Web Resources -->
+    <web-resource key="delete-all-attachments-web-resource" name="Delete All Attachments Web Resource">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="download" name="attach-deleter.js" location="/ru/andreymarkelov/atlas/plugins/attrrem/js/attach-deleter.js">
+            <property key="content-type" value="text/javascript"/>
+        </resource>
+        <context>atl.general</context>
+    </web-resource>
+    <web-resource key="delete-all-attachments-admin-resources" name="Delete All Attachments Admin Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="download" name="admin-attach-deleter.js" location="/ru/andreymarkelov/atlas/plugins/jirabipperserver/js/admin-attach-deleter.js">
+            <property key="content-type" value="text/javascript"/>
+        </resource>
+        <context>delete-all-attachments-admin</context>
+    </web-resource>
+
     <!-- Web Items -->
     <web-section key="delete-all-attachments-section" name="Delete All Attachments Section" location="admin_plugins_menu">
         <label key="ru.andreymarkelov.atlas.plugins.attrrem.section"/>
@@ -30,7 +46,7 @@
         <description key="ru.andreymarkelov.atlas.plugins.attrrem.action.desc">Delete all issue attachements if you have permission.</description>
         <condition class="ru.andreymarkelov.atlas.plugins.attrrem.condition.AttachDeleterCondition"><param name="permission">attachdeleteall</param></condition>
         <link linkId="ru-andreymarkelov-delete-all-attachments-page">/secure/DeleteAttachAction!default.jspa?id=${issueId}</link>
-        <styleClass>trigger-dialog opsbar-operations</styleClass>
+        <styleClass>trigger-dialog issueaction-delete-all-attachments</styleClass>
         <param name="isPopupLink">true</param>
     </web-item>
 

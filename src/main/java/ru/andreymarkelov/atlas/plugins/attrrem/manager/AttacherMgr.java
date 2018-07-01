@@ -4,4 +4,8 @@ public interface AttacherMgr {
     String[] getProjectKeys();
 
     void setProjectKeys(String[] projectKeys);
+
+    boolean isActiveForAll();
+
+    void setActiveForAll(boolean activeForAll);
 }

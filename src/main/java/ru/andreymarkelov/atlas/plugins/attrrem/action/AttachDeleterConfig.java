@@ -11,7 +11,6 @@ import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-
 import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
 
 public class AttachDeleterConfig extends JiraWebActionSupport {
@@ -23,7 +22,7 @@ public class AttachDeleterConfig extends JiraWebActionSupport {
     private boolean isSaved = false;
     private ProjectManager prMgr;
     private List<String> savedProjKeys;
-    private String[] selectedProjKeys = new String[0];
+    private String[] selectedProjKeys;
 
     public AttachDeleterConfig(
             AttacherMgr attacherMgr,

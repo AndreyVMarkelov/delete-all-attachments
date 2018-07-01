@@ -30,7 +30,7 @@ public class DeleteAttachmentsFunction extends AbstractJiraFunctionProvider {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void execute(Map transientVars, Map args, PropertySet ps) throws WorkflowException {
+    public void execute(Map transientVars, Map args, PropertySet ps) {
         MutableIssue issue = getIssue(transientVars);
 
         if (!permissionManager.hasPermission(ProjectPermissions.DELETE_ALL_ATTACHMENTS, issue, jiraAuthenticationContext.getLoggedInUser())) {
