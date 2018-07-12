@@ -41,6 +41,13 @@
                                 #if($action.getErrors().containsKey("selectedProjKeys"))<div class="error">$action.getErrors().get("selectedProjKeys")</div>#end
                                 <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.selectprojects.desc")</div>
                             </div>
+                            <div class="field-group">
+                                <div class="checkbox">
+                                    <input class="checkbox" type="checkbox" name="forAllProjects" id="forAllProjects" value="true" #if($forAllProjects)checked="true"#end/>
+                                    <label for="forAllProjects">$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.allprojects")</label>
+                                    <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.allprojects.desc")</div>
+                                </div>
+                            </div>
                             <div class="buttons-container">
                                 <div class="buttons">
                                     <input class="button submit" type="submit" value='$i18n.getText("ru.andreymarkelov.atlas.plugins.attrrem.settings.save")'/>

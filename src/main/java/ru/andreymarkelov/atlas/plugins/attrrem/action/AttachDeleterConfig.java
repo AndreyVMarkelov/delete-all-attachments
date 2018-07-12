@@ -9,6 +9,7 @@ import com.atlassian.jira.permission.GlobalPermissionKey;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.security.GlobalPermissionManager;
+import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import ru.andreymarkelov.atlas.plugins.attrrem.manager.AttacherMgr;
@@ -17,35 +18,44 @@ public class AttachDeleterConfig extends JiraWebActionSupport {
     private static final long serialVersionUID = -8881690781888724545L;
 
     private final AttacherMgr attacherMgr;
+    private final ProjectManager projectManager;
     private final GlobalPermissionManager globalPermissionManager;
 
     private boolean isSaved = false;
-    private ProjectManager prMgr;
     private List<String> savedProjKeys;
     private String[] selectedProjKeys;
+    private boolean forAllProjects;
 
     public AttachDeleterConfig(
             AttacherMgr attacherMgr,
-            ProjectManager prMgr,
+            ProjectManager projectManager,
             GlobalPermissionManager globalPermissionManager) {
         this.attacherMgr = attacherMgr;
-        this.prMgr = prMgr;
+        this.projectManager = projectManager;
         this.globalPermissionManager = globalPermissionManager;
-        selectedProjKeys = attacherMgr.getProjectKeys();
-        savedProjKeys = selectedProjKeys == null ? null : Arrays.asList(selectedProjKeys);
     }
 
     @Override
-    public String doDefault() throws Exception {
+    public String doDefault() {
         if(!hasAdminPermission()) {
             return PERMISSION_VIOLATION_RESULT;
         }
+
+        this.forAllProjects = attacherMgr.isActiveForAll();
+        this.selectedProjKeys = attacherMgr.getProjectKeys();
+        this.savedProjKeys = selectedProjKeys == null ? null : Arrays.asList(selectedProjKeys);
+
         return INPUT;
     }
 
-	@Override
-    @com.atlassian.jira.security.xsrf.RequiresXsrfCheck
-    protected String doExecute() throws Exception {
+    @Override
+    @RequiresXsrfCheck
+    protected String doExecute() {
+        if(!hasAdminPermission()) {
+            return PERMISSION_VIOLATION_RESULT;
+        }
+
+        attacherMgr.setActiveForAll(forAllProjects);
         attacherMgr.setProjectKeys(selectedProjKeys);
         if (selectedProjKeys != null) {
             savedProjKeys = Arrays.asList(attacherMgr.getProjectKeys());
@@ -56,10 +66,10 @@ public class AttachDeleterConfig extends JiraWebActionSupport {
 
     public Map<String, String> getAllProjects() {
         Map<String, String> allProjs = new TreeMap<String, String>();
-        List<Project> projs = prMgr.getProjectObjects();
-        if (projs != null) {
-            for (Project proj : projs) {
-                allProjs.put(proj.getId().toString(), getProjView(proj.getKey(), proj.getName()));
+        List<Project> projects = projectManager.getProjectObjects();
+        if (projects != null) {
+            for (Project project : projects) {
+                allProjs.put(project.getId().toString(), getProjView(project.getKey(), project.getName()));
             }
         }
         return allProjs;
@@ -99,5 +109,13 @@ public class AttachDeleterConfig extends JiraWebActionSupport {
 
     public void setSelectedProjKeys(String[] selectedProjKeys) {
         this.selectedProjKeys = selectedProjKeys;
+    }
+
+    public boolean isForAllProjects() {
+        return forAllProjects;
+    }
+
+    public void setForAllProjects(boolean forAllProjects) {
+        this.forAllProjects = forAllProjects;
     }
 }
