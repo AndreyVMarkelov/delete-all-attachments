@@ -10,8 +10,7 @@
         <h2>$action.getText("ru.andreymarkelov.atlas.plugins.attrrem.action")</h2>
         <form class="aui" method="post" action="DeleteAttachAction.jspa">
             <div class="form-body" style="max-height: 468px;">
-                <div class="aui-message info">
-                    <span class="aui-icon icon-info"></span>
+                <div class="aui-message aui-message-info">
                     <p>$action.getText("ru.andreymarkelov.atlas.plugins.attrrem.action.confirm")</p>
                 </div>
             </div>
